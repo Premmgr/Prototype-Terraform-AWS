@@ -1,5 +1,3 @@
-terraform.tfvars
-
 app-server/.terraform
 app-server/terraform.tfstate.backup
 app-server/terraform.tfstate
