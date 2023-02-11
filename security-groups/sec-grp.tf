@@ -17,6 +17,13 @@ resource "aws_security_group" "sec-grp" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+# allow sftpd protocol
+  ingress {
+    from_port   = 21
+    to_port     = 21
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 
 # allow http protocol
   ingress {

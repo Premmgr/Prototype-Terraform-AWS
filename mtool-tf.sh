@@ -112,7 +112,7 @@ case $user_input in
                 case ${second_arg} in
                         "server")
                                 printf "${GREEN}applying >>>>>\tapp-server${EC}\n"
-                                cd ${app_server_path} && terraform apply -var-file=${var_tf}
+                                cd ${app_server_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
 						"sftp")
                                 printf "${GREEN}applying >>>>>\tsftp-server${EC}\n"
@@ -120,15 +120,15 @@ case $user_input in
                         ;;
                         "db")
                                 printf "${GREEN}applying >>>>>\tdatabase${EC}\n"
-                                cd ${database_path} && terraform apply -var-file=${var_tf}
+                                cd ${database_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
                         "net")
                                 printf "${GREEN}applying >>>>>\tnetworks${EC}\n"
-                                cd ${network_path} && terraform apply -var-file=${var_tf}
+                                cd ${network_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
                         "sg")
                                 printf "${GREEN}applying >>>>>\tsecurity groups${EC}\n"
-                                cd ${security_group_path} && terraform apply -var-file=${var_tf}
+                                cd ${security_group_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
 
 						"all")
@@ -226,23 +226,23 @@ case $user_input in
                 case ${second_arg} in
                         "server")
                                 printf "${GREEN}running destroy command >>>>>\tapp-server${EC}\t"
-                                cd ${app_server_path} && terraform destroy -var-file=${var_tf}
+                                cd ${app_server_path} && terraform destroy -var-file=${var_tf} ${3}
                         ;;
 						"sftp")
                                 printf "${GREEN}running destroy command >>>>>\tsftp-server${EC}\t"
-                                cd ${sftp_server_path} && terraform destroy -var-file=${var_tf}
+                                cd ${sftp_server_path} && terraform destroy -var-file=${var_tf} ${3}
                         ;;
                         "db")
                                 printf "${GREEN}running destroy command >>>>>\tdatabase${EC}\t"
-                                cd ${database_path} && terraform destroy -var-file=${var_tf}
+                                cd ${database_path} && terraform destroy -var-file=${var_tf} ${3}
                         ;;
                         "net")
                                 printf "${GREEN}running destroy command >>>>>\tnetworks${EC}\t"
-                                cd ${network_path} && terraform destroy -var-file=${var_tf}
+                                cd ${network_path} && terraform destroy -var-file=${var_tf} ${3}
                         ;;
                         "sg")
                                 printf "${GREEN}running destroy command >>>>>\tsecurity groups${EC}\t"
-                                cd ${security_group_path} && terraform destroy -var-file=${var_tf}
+                                cd ${security_group_path} && terraform destroy -var-file=${var_tf} ${3}
                         ;;
 
 						"all")
