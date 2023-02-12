@@ -2,10 +2,7 @@ repository contains all the required tool to create (vpc,vpc-subnet,internet gw,
 code owner: prem gharti
 
 usage:
-step 1
-before running any configuration plan please check if you have valid inforamation in terraform.tfvars to allow terraform to connect with aws backend.
 
-step 2
 launch instance
 > init > plan > apply 
 
@@ -24,24 +21,24 @@ so modify and replace with your correct information.
 -------------------------------------------------------------------------
 each terraform configuration process.
 
-network: 
+network:
 create vpc called stage, create vpc-subnet called stage, create internet gateway.
 
-security groups: 
+security groups:
 create security group called sec-grp and associate with stage-vpc.
 
-database: 
+database:
 automatically launch e2c instance called database using terraform.tfvars value, (instance type,ssh-key)
 uses stage-vpc created by network terraform configuration.
 perform remote exec and clone git repository provided in db-instance.tf
 execute shell script for provisioning perpose.
 
-app-server:  
+app-server: 
 automatically launch e2c instance called app-server using terraform.tfvars value, (instance type,ssh-key)
 uses stage-vpc created by network terraform configuration.
 perform remote exec and clone git repository provided in app-server.tf
 
-sftp-server: 
+sftp-server:
 automatically launch e2c instance called sftp-server using terraform.tfvars value, (instance type,ssh-key)
 uses stage-vpc created by network terraform configuration.
 perform remote exec provision shell script to execute required command to install sftp service on the sftp-server.

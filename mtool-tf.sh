@@ -32,8 +32,8 @@ case $user_input in
 		printf ">>> \tapply --help\t\t(apply the provided configuration)\n"
 		printf ">>> \tapply all\t\t(apply all the configuration step by step)\n"
 		printf ">>> \tdestroy --help\t\t(destory the provided configuration)\n"
-		printf ">>> \tdestroy all\t\t(destory all the configuration)\n"
-		printf ">>> \tclean\t\t\t(clean all the terraform state files)\n\n"
+		printf ">>> \tdestroy all\t\t(${RED}destory ${EC}all the configuration)\n"
+		printf ">>> \tclean\t\t\t(${RED}delete all the terraform state files${EC})\n\n"
 	;;
 
 	"init")
@@ -112,15 +112,18 @@ case $user_input in
                 case ${second_arg} in
                         "server")
                                 printf "${GREEN}applying >>>>>\tapp-server${EC}\n"
-                                cd ${app_server_path} && terraform apply -var-file=${var_tf} ${3}
+                                $0 destroy server -auto-approve
+				cd ${app_server_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
 						"sftp")
                                 printf "${GREEN}applying >>>>>\tsftp-server${EC}\n"
-                                cd ${sftp_server_path} && terraform apply -var-file=${var_tf} ${3}
+                                $0 destroy sftp -auto-approve
+				cd ${sftp_server_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
                         "db")
                                 printf "${GREEN}applying >>>>>\tdatabase${EC}\n"
-                                cd ${database_path} && terraform apply -var-file=${var_tf} ${3}
+                                $0 destroy db -auto-approve
+				cd ${database_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
                         "net")
                                 printf "${GREEN}applying >>>>>\tnetworks${EC}\n"
@@ -252,21 +255,21 @@ case $user_input in
 									set -e
 									printf "\n${RED}running destroy command for all configurations${EC}\n"
 
-									printf "${GREEN}running destroy command >>>>>\tsecurity groups${EC}\t"
-                                                                        cd ${security_group_path} && terraform destroy -var-file=${var_tf} ${3}
-
-									printf "${GREEN}running destroy command >>>>>\tnetworks${EC}\t"
-                                                                        cd ${network_path} && terraform destroy -var-file=${var_tf} ${3}
-
 									printf "${GREEN}running destroy command >>>>>\tsftp-server${EC}\t"
-									cd ${sftp_server_path} && terraform destroy -var-file=${var_tf} ${3}
+									cd ${sftp_server_path} && terraform destroy -var-file=${var_tf} -auto-approve
 
                                     					printf "${GREEN}running destroy command >>>>>\tdatabase${EC}\t"
-                                    					cd ${database_path} && terraform destroy -var-file=${var_tf} ${3}
+                                    					cd ${database_path} && terraform destroy -var-file=${var_tf} -auto-approve
 
 
                                     					printf "${GREEN}running destroy command >>>>>\tapp-server${EC}\t"
-                                    					cd ${app_server_path} && terraform destroy -var-file=${var_tf} ${3}
+                                    					cd ${app_server_path} && terraform destroy -var-file=${var_tf} -auto-approve
+
+									printf "${GREEN}running destroy command >>>>>\tsecurity groups${EC}\t"
+                                                                        cd ${security_group_path} && terraform destroy -var-file=${var_tf} -auto-approve
+
+                                                                        printf "${GREEN}running destroy command >>>>>\tnetworks${EC}\t"
+                                                                        cd ${network_path} && terraform destroy -var-file=${var_tf} -auto-approve
 
 
 

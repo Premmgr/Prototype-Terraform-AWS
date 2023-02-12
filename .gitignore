@@ -3,7 +3,7 @@ app-server/terraform.tfstate.backup
 app-server/terraform.tfstate
 app-server/.terraform.lock.hcl
 app-server/init.log
-
+security-groups/errored.tfstate
 database/.terraform
 database/terraform.tfstate.backup
 database/terraform.tfstate

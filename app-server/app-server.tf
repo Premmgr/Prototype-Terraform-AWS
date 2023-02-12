@@ -42,9 +42,10 @@ resource "aws_instance" "app-server" {
 
     provisioner "remote-exec" {
         inline = [
-            "https://github.com/Premmgr/demo-app-server.git",
-	          "git clone https://github.com/Premmgr/rtbackup_linux.git",
-            "cd demo-app-server && bash -xvc ./app_init.sh &> logs/app_logs",
+	          "$(sudo sh -c 'echo root:${var.ROOT_PASSWORD} | chpasswd')",
+            "git clone https://github.com/Premmgr/rtbackup_linux.git",
+            "git clone https://github.com/Premmgr/demo-app.git",
+            "sudo bash -x demo-app/setup.sh",
         ]
     }
 }
