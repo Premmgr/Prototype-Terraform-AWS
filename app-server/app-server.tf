@@ -49,11 +49,3 @@ resource "aws_instance" "app-server" {
         ]
     }
 }
-resource "aws_eip" "app-server" {
-  vpc = true
-}
-
-resource "aws_eip_association" "app-server" {
-  instance_id = aws_instance.app-server.id
-  allocation_id = aws_eip.app-server.id
-}

@@ -17,6 +17,15 @@ resource "aws_security_group" "sec-grp" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+# allow grafana protocol
+  ingress {
+    from_port   = 3000
+    to_port     = 3000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 # allow sftpd protocol
   ingress {
     from_port   = 21

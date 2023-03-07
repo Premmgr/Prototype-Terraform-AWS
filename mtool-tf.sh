@@ -5,7 +5,7 @@
 # variables
 user_input="$1"
 second_arg="$2"
-version="v1.0"
+version="v1.2"
 
 RED="\e[31m"
 GREEN="\e[32m"
@@ -22,17 +22,43 @@ security_group_path="$(pwd)/security-groups"
 sftp_server_path="$(pwd)/sftp-server"
 var_tf="../terraform.tfvars"
 
+# functions
+install_terraform() {
+        sudo apt update
+        wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+        echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+        sudo apt update && sudo apt install terraform -y
+}
+f_install_terraform=install_terraform
 
+# case
 case $user_input in
+	"state")
+		case $second_arg in
+			"list")
+                		
+                		printf "${YELLOW}state lists${EC}\n"
+				cd ${app_server_path} && terraform state list
+               		 	cd ${database_path} && terraform state list
+                		cd ${network_path} && terraform state list
+                		cd ${security_group_path} && terraform state list
+                		cd ${sftp_server_path} && terraform state list
+			;;
+		*)
+			printf "available options [ ${YELLOW}list${EC} ]\n"
+		esac
+	;;
+	
 	"--help")
 		printf "\n"
 		printf ">>> \tinit\t\t\t(initialize terraform for every configuration path)\n"
 		printf ">>> \tplan --help\t\t(plan the provided configuration)\n"
 		printf ">>> \tplan all\t\t(plan all the configuration step by step)\n"
+		printf ">>> \tstate --help\t\t(state lists of all the configuration)\n"
 		printf ">>> \tapply --help\t\t(apply the provided configuration)\n"
 		printf ">>> \tapply all\t\t(apply all the configuration step by step)\n"
-		printf ">>> \tdestroy --help\t\t(destory the provided configuration)\n"
-		printf ">>> \tdestroy all\t\t(${RED}destory ${EC}all the configuration)\n"
+		printf ">>> \tdestroy --help\t\t(destroy the provided configuration)\n"
+		printf ">>> \tdestroy all\t\t(${RED}destroy ${EC}all the configuration on aws)\n"
 		printf ">>> \tclean\t\t\t(${RED}delete all the terraform state files${EC})\n\n"
 	;;
 
@@ -115,9 +141,11 @@ case $user_input in
                                 $0 destroy server -auto-approve
 				cd ${app_server_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
-						"sftp")
+			"sftp")
                                 printf "${GREEN}applying >>>>>\tsftp-server${EC}\n"
-                                $0 destroy sftp -auto-approve
+                                $0 destroy sftp -auto-approve &> /dev/null
+				$0 apply net -auto-approve
+				$0 apply sg -auto-approve 
 				cd ${sftp_server_path} && terraform apply -var-file=${var_tf} ${3}
                         ;;
                         "db")
@@ -302,11 +330,26 @@ case $user_input in
 	"status")
 		# initial status
 		printf "\t${YELLOW}$(echo $0 | cut -d "/" -f 2) version_${version}\t${EC}\n\n"
-		printf "${GREEN}installed terraform\t>\t$(terraform version | head -1| cut -d " " -f2)${EC}\n"
-		printf "${GREEN}supported provider\t>\taws${EC}\n"
-		printf "${GREEN}terraform varfile\t>\tterraform.tfvars\n"
+		terraform version &> /dev/null && printf "terraform version: ${GREEN}$(terraform version | head -1| cut -d " " -f2)${EC}\n"
+		terraform version &> /dev/null || printf "terraform version: ${EC}\t${RED}Not installed${EC}\t<try $0 install terraform>\n"
+		printf "supported provider: ${GREEN}aws${EC}\n"
+		printf "terraform varfile: ${GREEN}terraform.tfvars${EC}\n"
 	;;
-
+	"install")
+		case "$2" in
+			"terraform")
+				if $(terraform version &> /dev/null) ;
+				then
+					echo "terraform already installed"
+				else
+					echo "installing terraform..."
+					${f_install_terraform} && echo -e "${GREEN}terraform installed${EC}\n" && $0 status
+				fi
+				;;
+			*)
+				printf "available option [terraform]\n"
+		esac
+	;;
         "clean")
                 # deletes all the tf state files and .terraform directory which requires new initialization at the start
 
@@ -335,3 +378,5 @@ case $user_input in
 	*)
 		printf "${YELLOW}invalid command, try --help for the help\n"
 esac
+
+

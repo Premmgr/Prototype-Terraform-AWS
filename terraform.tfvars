@@ -8,3 +8,6 @@ AWS_INSTANCE_TYPE = "t2.micro"
 AWS_SSH_KEY = "server-key"
 PROVISION_SSH_KEY = "server-key.pem"
 ROOT_PASSWORD = "password"
+FTPUSER_PASS = "stage"
+FTPUSER_NAME = "ftpuser"
+

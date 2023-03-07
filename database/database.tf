@@ -19,7 +19,7 @@ data "aws_security_group" "selected" {
   }
 }
 
-resource "aws_instance" "ftp-server" {
+resource "aws_instance" "database" {
   ami           = "${var.AWS_AMI}"
   instance_type = "${var.AWS_INSTANCE_TYPE}"
   key_name      = "${var.AWS_SSH_KEY}"
@@ -27,13 +27,12 @@ resource "aws_instance" "ftp-server" {
   subnet_id              = data.aws_subnet.selected.id
   associate_public_ip_address = true
 	lifecycle {
-    	create_before_destroy = true
+   	create_before_destroy = true
 	}
 
   tags = {
-    Name = "ftp-server"
+    Name = "database"
   }
-
     connection {
 
         type    = "ssh"
@@ -41,18 +40,11 @@ resource "aws_instance" "ftp-server" {
         private_key = file("${var.PROVISION_SSH_KEY}")
         host    = self.public_ip
     }
-  provisioner "file" {
-    source      = "provisioner.sh"
-    destination = "/home/ubuntu/provisioner.sh"
-  }
 
-  # executes the following commands remotely
-  provisioner "remote-exec" {
-    inline = [
-      "$(sudo sh -c 'echo root:${var.ROOT_PASSWORD} | chpasswd')",
-      "git clone https://github.com/Premmgr/rtbackup_linux.git",
-      "sudo chmod +x /home/ubuntu/provisioner.sh",
-      "sh /home/ubuntu/provisioner.sh",
-    ]
-  }
+    provisioner "remote-exec" {
+        inline = [
+            "$(sudo sh -c 'echo root:${var.ROOT_PASSWORD} | chpasswd')",
+            "git clone https://github.com/Premmgr/mysql.git",
+        ]
+    }
 }

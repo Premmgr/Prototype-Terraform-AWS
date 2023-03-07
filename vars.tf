@@ -6,3 +6,5 @@ variable "AWS_INSTANCE_TYPE" {}
 variable "AWS_SSH_KEY" {}
 variable "PROVISION_SSH_KEY" {}
 variable "ROOT_PASSWORD" {}
+variable "FTPUSER_PASS" {}
+variable "FTPUSER_NAME" {}
