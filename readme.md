@@ -1,3 +1,7 @@
+#NOTE  
+```rework required for bash script```  
+
+--------------------------------------
 repository contains all the required tool to create (vpc,vpc-subnet,internet gw,security groups,instance,elastic ip etc)
 code owner: prem gharti
 
