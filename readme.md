@@ -1,6 +1,6 @@
 #NOTE  
 ```rework required for bash script```  
-```this repository will be impleted on python-infrastructure repository```  
+```this repository will be implemented on python-infrastructure repository```  
 
 link to repository:  ```https://github.com/Premmgr/python-infrastructure``` 
 
