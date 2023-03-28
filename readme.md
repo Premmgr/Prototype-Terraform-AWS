@@ -1,6 +1,8 @@
 #NOTE  
 ```rework required for bash script```  
-```this repository will be delted and impleted on python-infrastructure```  
+```this repository will be impleted on python-infrastructure repository```  
+
+link to repository:  ```https://github.com/Premmgr/python-infrastructure``` 
 
 --------------------------------------
 repository contains all the required tool to create (vpc,vpc-subnet,internet gw,security groups,instance,elastic ip etc)
